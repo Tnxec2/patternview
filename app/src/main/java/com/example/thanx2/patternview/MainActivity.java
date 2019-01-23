@@ -1,5 +1,6 @@
 package com.example.thanx2.patternview;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -13,7 +14,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.example.thanx2.patternview.database.DatabaseAdapter;
+import com.example.thanx2.patternview.model.Pattern;
+
 import java.io.IOException;
+import java.util.Date;
 
 
 /*
@@ -37,14 +42,19 @@ public class MainActivity extends AppCompatActivity {
 
     private final static int ROW_DIFF = 10;
     private final static float SCALE_STEP = 0.1f;
+    private final static float MIN_SCALE = 0.1f;
+    private final static float MAX_SCALE = 10f;
 
     Uri uriImage;
 
     Button btn_RowHeightShrink, btn_RowHeightGrow, btn_PatternShrink, btn_PatternGrow,
             btn_PatternLeft, btn_PatternRight, btn_ImageUp, btn_ImageDown;
     ImageView iv_Pattern;
+    long patternId = 0;
     Float scale = 1f;
     Matrix matrix = new Matrix();
+
+    private DatabaseAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         iv_Pattern = findViewById(R.id.iv_Pattern);
 
-        if ( savedInstanceState != null) {
-            if ( savedInstanceState.containsKey(IMAGE_URI)) {
-                uriImage = Uri.parse(savedInstanceState.getString(IMAGE_URI));
-                loadImage(uriImage);
-            }
-        }
+        adapter = new DatabaseAdapter(this);
     }
 
     @Override
@@ -86,29 +91,44 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_OpenImage :
                 openImage();
                 return true;
+            case R.id.action_RecentPatternList :
+                if ( uriImage != null ) {
+                    saveToDb();
+                }
+                Intent intent = new Intent(getApplicationContext(), PatternList.class);
+                startActivity(intent);
+                return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        //TODO: Laden ausgewählte Image
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+
+            saveToDb();
+
             uriImage = data.getData();
-
             loadImage(uriImage);
-        }
-    }
 
-    private void loadImage(Uri uri) {
-        if ( uri != null) {
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
-                // Log.d(TAG, String.valueOf(bitmap));
-                iv_Pattern.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            adapter.open();
+            Pattern pattern = adapter.getPatternByUri(uriImage.toString());
+            if ( pattern != null) {
+                iv_Pattern.getLayoutParams().height = pattern.getRowHeight();
+                iv_Pattern.scrollTo( pattern.getImageScrollX(), pattern.getImageScrollY());
+                imageScale(pattern.getImageScalle());
+                pattern.setLastOpened(new Date().getTime());
+                adapter.update(pattern);
             }
+            adapter.close();
         }
     }
 
@@ -152,15 +172,48 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private void saveToDb() {
+        if ( uriImage != null) {
+            adapter.open();
+            Pattern pattern = new Pattern(
+                    patternId,
+                    uriImage.toString(),
+                    iv_Pattern.getMeasuredHeight(),
+                    iv_Pattern.getScrollX(),
+                    iv_Pattern.getScrollY(),
+                    iv_Pattern.getScaleX());
+            pattern.setLastOpened(new Date().getTime());
+
+            if (patternId > 0) {
+                adapter.update(pattern);
+            } else {
+                adapter.insert(pattern);
+            }
+            adapter.close();
+        }
+    }
+
+    private void loadImage(Uri uri) {
+        if ( uri != null) {
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                // Log.d(TAG, String.valueOf(bitmap));
+                iv_Pattern.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     public void imageZoomIn(View view) {
         scale = scale * ( 1 + SCALE_STEP );
-        scale = Math.max(0.1f,Math.min(scale,5f));
+        scale = checkScale(scale);
         imageScale(scale);
     }
 
     public void imageZoomOut(View view) {
         scale = scale * ( 1 - SCALE_STEP );
-        scale = Math.max(0.1f,Math.min(scale,5f));
+        scale = checkScale(scale);
         imageScale(scale);
     }
 
@@ -174,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
         float iW = iv_Pattern.getDrawable().getIntrinsicWidth();
 
         scale = iw / iW;
-        scale = Math.max(0.1f, Math.min(scale, 5f));
+        scale = checkScale(scale);
 
         imageScale(scale);
         iv_Pattern.scrollTo(0, iv_Pattern.getScrollY());
@@ -251,7 +304,11 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
     // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_IMAGE_REQUEST);
+    }
+
+    private float checkScale(float scale) {
+        return Math.max(MIN_SCALE, Math.min(scale, MAX_SCALE));
     }
 
 }

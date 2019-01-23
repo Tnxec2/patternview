@@ -12,4 +12,5 @@
     <string name="row_down">Row Down</string>
     <string name="left">Left</string>
     <string name="right">Right</string>
+    <string name="select_picture">Select Picture</string>
 </resources>
