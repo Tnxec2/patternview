@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Pattern View</string>
+    <string name="row_height_shrink">Row Height Shrink</string>
+    <string name="row_height_grow">Row Height Grow</string>
+    <string name="image_up">Image Up</string>
+    <string name="image_down">Image Down</string>
+    <string name="image_zoom_in">Image Zoom In</string>
+    <string name="image_zoom_out">Image Zoom Out</string>
+    <string name="image_crop">Original Zoom</string>
+    <string name="image_fit">Image Fit</string>
+    <string name="row_up">Row Up</string>
+    <string name="row_down">Row Down</string>
+    <string name="left">Left</string>
+    <string name="right">Right</string>
+</resources>
