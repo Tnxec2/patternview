@@ -1,5 +1,7 @@
 package com.example.thanx2.patternview.model;
 
+import java.util.Date;
+
 public class Pattern {
 
     private Long id;
@@ -17,6 +19,17 @@ public class Pattern {
         this.imageScrollX = imageScrollX;
         this.imageScrollY = imageScrollY;
         this.imageScalle = imageScalle;
+        this.lastOpened = new Date().getTime();
+    }
+
+    public Pattern(String uri, Integer rowHeight, Integer imageScrollX, Integer imageScrollY, Float imageScalle) {
+        this.id = null;
+        this.uri = uri;
+        this.rowHeight = rowHeight;
+        this.imageScrollX = imageScrollX;
+        this.imageScrollY = imageScrollY;
+        this.imageScalle = imageScalle;
+        this.lastOpened = new Date().getTime();
     }
 
     public Long getId() {

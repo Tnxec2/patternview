@@ -16,7 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".PatternList"></activity>
+        <activity android:name=".PatternListActivity"></activity>
+
     </application>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  />
+    <uses-permission android:name="android.permission.MANAGE_DOCUMENTS" />
 
 </manifest>

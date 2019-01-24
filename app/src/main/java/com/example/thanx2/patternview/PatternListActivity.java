@@ -1,0 +1,96 @@
+package com.example.thanx2.patternview;
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
+
+import com.example.thanx2.patternview.adapter.PatternAdapter;
+import com.example.thanx2.patternview.database.DatabaseAdapter;
+import com.example.thanx2.patternview.model.Pattern;
+
+import java.util.List;
+
+public class PatternListActivity extends AppCompatActivity {
+
+    List<Pattern> patterns;
+
+    ListView patternListView;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_pattern_list);
+
+        DatabaseAdapter adapter = new DatabaseAdapter(this);
+        adapter.open();
+
+        // Datenbank auf Maximale Anzahl bereinigen
+        adapter.clean();
+
+        patterns = adapter.getPatterns();
+        adapter.close();
+
+        patternListView = findViewById(R.id.lv_patternList);
+
+        PatternAdapter patternAdapter = new PatternAdapter(this, R.layout.patternlist_item, patterns);
+
+        patternListView.setAdapter(patternAdapter);
+
+        AdapterView.OnItemClickListener itemListener = new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
+
+                giveBackPattern(position);
+            }
+        };
+        patternListView.setOnItemClickListener(itemListener);
+
+        registerForContextMenu(patternListView);
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo)
+    {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.patternlist_context_menu, menu);
+        menu.setHeaderTitle(R.string.select_action);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+
+        if(item.getItemId()==R.id.action_open){
+            giveBackPattern(info.position);
+        } else if(item.getItemId()==R.id.action_delete){
+            Toast.makeText(getApplicationContext(),"delete" + patterns.get( info.position ),Toast.LENGTH_LONG).show();
+            DatabaseAdapter adapter = new DatabaseAdapter(this);
+            adapter.open();
+            adapter.deleteByUri( patterns.get(info.position).getUri());
+            patterns.remove(info.position);
+            adapter.close();
+        }else{
+            return false;
+        }
+        return true;
+    }
+
+    private void giveBackPattern(int position) {
+        Pattern selectedPattern = patterns.get(position);
+
+        // und zurück an MainActivity übergeben
+        Intent data = new Intent();
+        data.putExtra(MainActivity.IMAGE_URI, selectedPattern.getUri());
+        setResult(RESULT_OK, data);
+        finish();
+    }
+}

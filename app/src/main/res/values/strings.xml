@@ -13,4 +13,12 @@
     <string name="left">Left</string>
     <string name="right">Right</string>
     <string name="select_picture">Select Picture</string>
+    <string name="thumbnail">thumbnail</string>
+    <string name="name">name</string>
+    <string name="uri">uri</string>
+    <string name="open_image">Open Image</string>
+    <string name="recent_pattern_list">Recent pattern list</string>
+    <string name="delete">Delete</string>
+    <string name="open">Open</string>
+    <string name="select_action">Select The Action</string>
 </resources>

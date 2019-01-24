@@ -9,12 +9,27 @@
         android:layout_marginRight="16dp"
         android:layout_marginEnd="16dp"
         android:layout_width="70dp"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:contentDescription="@string/thumbnail" />
 
-    <TextView
-        android:id="@+id/name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="uri" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+
+        <TextView
+            android:id="@+id/uri"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/uri"
+            android:visibility="invisible" />
+    </LinearLayout>
 
 </LinearLayout>

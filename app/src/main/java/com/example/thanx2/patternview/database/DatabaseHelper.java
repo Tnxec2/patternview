@@ -6,19 +6,19 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "patternstore.db"; // название бд
-    private static final int SCHEMA = 2; // версия базы данных
+    private static final int SCHEMA = 1; // версия базы данных
     static final String TABLE = "pattern"; // название таблицы в бд
 
     // названия столбцов
-    public static final String COLUMN_ID = "_id";
-    public static final String COLUMN_URI = "uri";
-    public static final String COLUMN_ROWHEIGHT = "row_height";
-    public static final String COLUMN_SCROLLX = "scrollx";
-    public static final String COLUMN_SCROLLY = "scrolly";
-    public static final String COLUMN_SCALE = "scale";
-    public static final String COLUMN_LASTOPENED = "last_opened";
+    static final String COLUMN_ID = "_id";
+    static final String COLUMN_URI = "uri";
+    static final String COLUMN_ROWHEIGHT = "rowheight";
+    static final String COLUMN_SCROLLX = "scrollx";
+    static final String COLUMN_SCROLLY = "scrolly";
+    static final String COLUMN_SCALE = "scale";
+    static final String COLUMN_LASTOPENED = "lastopened";
 
-    public DatabaseHelper(Context context) {
+    DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, SCHEMA);
     }
 
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 + COLUMN_SCROLLX + " INTEGER, "
                 + COLUMN_SCROLLY + " INTEGER, "
                 + COLUMN_SCALE + " REAL, "
-                + COLUMN_LASTOPENED + "INTEGER "
+                + COLUMN_LASTOPENED + " INTEGER "
                 + ");"
         );
         // добавление начальных данных
@@ -42,7 +42,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion,  int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+TABLE);
+        db.execSQL("DROP TABLE IF EXISTS " + TABLE);
         onCreate(db);
     }
 }

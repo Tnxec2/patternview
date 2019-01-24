@@ -3,7 +3,8 @@ package com.example.thanx2.patternview.adapter;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.provider.MediaStore;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.thanx2.patternview.helper.ImageHelper;
 import com.example.thanx2.patternview.R;
 import com.example.thanx2.patternview.database.DatabaseAdapter;
 import com.example.thanx2.patternview.model.Pattern;
@@ -31,6 +33,7 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
         this.inflater = LayoutInflater.from(context);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder viewHolder;
@@ -46,19 +49,18 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
 
         Bitmap bitmap = null;
         try {
-            bitmap = MediaStore.Images.Media.getBitmap( parent.getContext().getContentResolver(), Uri.parse(item.getUri()) );
+            Uri uri = Uri.parse(item.getUri());
+            bitmap = ImageHelper.getBitmapFromUri(uri, getContext());
             viewHolder.imageView.setImageBitmap( bitmap );
-            viewHolder.nameView.setText( item.getUri() );
-
+            String uriString = item.getUri();
+            viewHolder.nameView.setText(  uriString.substring(uriString.lastIndexOf("%2F") + 3) );
+            viewHolder.uriView.setText( item.getUri() );
             return convertView;
         } catch (IOException e) {
             e.printStackTrace();
             DatabaseAdapter adapter = new DatabaseAdapter( parent.getContext() );
             adapter.open();
-            Pattern result = adapter.getPatternByUri( item.getUri() );
-            if (result != null) {
-                adapter.delete(result.getId());
-            }
+            adapter.deleteByUri(item.getUri());
             adapter.close();
         }
 
@@ -68,9 +70,12 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
     private class ViewHolder {
         final ImageView imageView;
         final TextView nameView;
+        final TextView uriView;
         ViewHolder(View view){
             imageView = (ImageView)view.findViewById(R.id.image);
             nameView = (TextView) view.findViewById(R.id.name);
+            uriView = (TextView) view.findViewById(R.id.uri);
         }
     }
+
 }

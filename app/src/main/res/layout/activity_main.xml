@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:orientation="vertical">
@@ -32,7 +32,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="rowShrink"
                     android:text="@string/row_height_shrink" />
 
                 <Button
@@ -40,7 +39,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="rowGrow"
                     android:text="@string/row_height_grow" />
             </LinearLayout>
 
@@ -54,7 +52,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageUp"
                     android:text="@string/image_up" />
 
                 <Button
@@ -62,7 +59,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageDown"
                     android:text="@string/image_down" />
             </LinearLayout>
 
@@ -77,15 +73,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageZoomIn"
                     android:text="@string/image_zoom_in" />
 
                 <Button
-                    android:id="@+id/btn_Zoom"
+                    android:id="@+id/btn_OriginalZoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageOriginal"
                     android:text="@string/image_crop" />
 
                 <Button
@@ -93,7 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageFit"
                     android:text="@string/image_fit" />
 
                 <Button
@@ -101,7 +94,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:onClick="imageZoomOut"
                     android:text="@string/image_zoom_out" />
             </LinearLayout>
 
@@ -109,7 +101,7 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.example.thanx2.patternview.helper.PatternView
         android:id="@+id/iv_Pattern"
         android:layout_width="match_parent"
         android:layout_height="100dp"
@@ -119,7 +111,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayoutRow"
-        app:srcCompat="@drawable/testpattern" />
+        />
 
     <LinearLayout
         android:id="@+id/linearLayoutPattern"
@@ -135,23 +127,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="patternLeft"
             android:text="@string/left" />
 
         <Button
-            android:id="@+id/btn_PatternShrink"
+            android:id="@+id/btn_RowUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="rowUp"
             android:text="@string/row_up" />
 
         <Button
-            android:id="@+id/btn_PatternGrow"
+            android:id="@+id/btn_RowDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="rowDown"
             android:text="@string/row_down" />
 
         <Button
@@ -159,7 +148,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:onClick="patternRight"
             android:text="@string/right" />
     </LinearLayout>
 
