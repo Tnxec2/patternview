@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Pattern View</string>
+    <string name="row_height_shrink">Zeilenhöhe verkleinern</string>
+    <string name="row_height_grow">Zeilenhöhe erhöhen</string>
+    <string name="image_up">Bild nach oben</string>
+    <string name="image_down">Bild nach unten</string>
+    <string name="image_zoom_in">vergrössern</string>
+    <string name="image_zoom_out">verkleinern</string>
+    <string name="image_crop">original</string>
+    <string name="image_fit">skalieren</string>
+    <string name="row_up">nach Oben</string>
+    <string name="row_down">nach Unten</string>
+    <string name="left">nach Links</string>
+    <string name="right">nach Rechts</string>
+    <string name="select_picture">Bild auswählen</string>
+    <string name="thumbnail">Vorschau</string>
+    <string name="name">Name</string>
+    <string name="uri">Pfad</string>
+    <string name="open_image">Bild öffnen</string>
+    <string name="recent_pattern_list">Zuletzt geöffnete</string>
+    <string name="delete">Eintrag löschen</string>
+    <string name="open">Öffnen</string>
+    <string name="select_action">Wählen Sie Aktion</string>
+</resources>
