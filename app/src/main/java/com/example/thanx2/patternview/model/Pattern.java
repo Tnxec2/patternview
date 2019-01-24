@@ -2,33 +2,45 @@ package com.example.thanx2.patternview.model;
 
 import java.util.Date;
 
+import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
+import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
+
 public class Pattern {
 
     private Long id;
     private String uri;
     private Integer rowHeight;
-    private Integer imageScrollX;
-    private Integer imageScrollY;
-    private Float imageScalle;
+    private Integer scrollX;
+    private Integer scrollY;
+    private Float scale;
     private Long lastOpened;
 
-    public Pattern(Long id, String uri, Integer rowHeight, Integer imageScrollX, Integer imageScrollY, Float imageScalle) {
+    public Pattern() {
+        id = null;
+        uri = null;
+        rowHeight = ROW_HEIGHT_DEFAULT;
+        scrollX = 0;
+        scrollY = 0;
+        scale = ORIGINAL_SCALE;
+        lastOpened = null;
+    }
+
+    public Pattern(Long id, String uri, Integer rowHeight, Integer scrollX, Integer scrollY, Float scale) {
         this.id = id;
         this.uri = uri;
         this.rowHeight = rowHeight;
-        this.imageScrollX = imageScrollX;
-        this.imageScrollY = imageScrollY;
-        this.imageScalle = imageScalle;
+        this.scrollX = scrollX;
+        this.scrollY = scrollY;
+        this.scale = scale;
         this.lastOpened = new Date().getTime();
     }
 
-    public Pattern(String uri, Integer rowHeight, Integer imageScrollX, Integer imageScrollY, Float imageScalle) {
-        this.id = null;
+    public Pattern(String uri, Integer rowHeight, Integer scrollX, Integer scrollY, Float scale) {
         this.uri = uri;
         this.rowHeight = rowHeight;
-        this.imageScrollX = imageScrollX;
-        this.imageScrollY = imageScrollY;
-        this.imageScalle = imageScalle;
+        this.scrollX = scrollX;
+        this.scrollY = scrollY;
+        this.scale = scale;
         this.lastOpened = new Date().getTime();
     }
 
@@ -56,28 +68,28 @@ public class Pattern {
         this.rowHeight = rowHeight;
     }
 
-    public Integer getImageScrollX() {
-        return imageScrollX;
+    public Integer getScrollX() {
+        return scrollX;
     }
 
-    public void setImageScrollX(Integer imageScrollX) {
-        this.imageScrollX = imageScrollX;
+    public void setScrollX(Integer scrollX) {
+        this.scrollX = scrollX;
     }
 
-    public Integer getImageScrollY() {
-        return imageScrollY;
+    public Integer getScrollY() {
+        return scrollY;
     }
 
-    public void setImageScrollY(Integer imageScrollY) {
-        this.imageScrollY = imageScrollY;
+    public void setScrollY(Integer scrollY) {
+        this.scrollY = scrollY;
     }
 
-    public Float getImageScalle() {
-        return imageScalle;
+    public Float getScale() {
+        return scale;
     }
 
-    public void setImageScalle(Float imageScalle) {
-        this.imageScalle = imageScalle;
+    public void setScale(Float scalle) {
+        this.scale = scalle;
     }
 
     public Long getLastOpened() {
