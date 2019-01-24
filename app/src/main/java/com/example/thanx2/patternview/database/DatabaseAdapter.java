@@ -113,9 +113,9 @@ public class DatabaseAdapter {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_URI, pattern.getUri());
         cv.put(DatabaseHelper.COLUMN_ROWHEIGHT, pattern.getRowHeight());
-        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getImageScrollX());
-        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getImageScrollY());
-        cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getImageScalle());
+        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getScrollX());
+        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getScrollY());
+        cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getScale());
         cv.put(DatabaseHelper.COLUMN_LASTOPENED, pattern.getLastOpened());
 
         return  database.insert(DatabaseHelper.TABLE, null, cv);
@@ -139,9 +139,9 @@ public class DatabaseAdapter {
         ContentValues cv = new ContentValues();
         cv.put(DatabaseHelper.COLUMN_URI, pattern.getUri());
         cv.put(DatabaseHelper.COLUMN_ROWHEIGHT, pattern.getRowHeight());
-        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getImageScrollX());
-        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getImageScrollY());
-        cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getImageScalle());
+        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getScrollX());
+        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getScrollY());
+        cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getScale());
         cv.put(DatabaseHelper.COLUMN_LASTOPENED, pattern.getLastOpened());
 
         return database.update(DatabaseHelper.TABLE, cv, whereClause, null);
