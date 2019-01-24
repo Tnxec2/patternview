@@ -192,7 +192,7 @@ public class MainActivity extends AppCompatActivity {
             iv_Pattern.imageScale( savedInstanceState.getFloat(IMAGE_SCALE) );
         }
 
-        if ( savedInstanceState.containsKey(IMAGE_SCROLL_Y)
+        if ( savedInstanceState.containsKey(IMAGE_SCROLL_X)
                 && savedInstanceState.containsKey(IMAGE_SCROLL_Y)) {
             iv_Pattern.getPattern().setScrollX( savedInstanceState.getInt(IMAGE_SCROLL_X) );
             iv_Pattern.getPattern().setScrollY( savedInstanceState.getInt(IMAGE_SCROLL_Y) );
