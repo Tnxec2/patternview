@@ -11,7 +11,7 @@ import java.io.IOException;
 
 public class ImageHelper {
 
-    public static Bitmap getBitmapFromUri(Uri uri, Context context) throws IOException {
+    public static Bitmap getBitmapFromUri(Uri uri, Context context) throws Exception {
         ParcelFileDescriptor parcelFileDescriptor =
                 context.getContentResolver().openFileDescriptor(uri, "r");
         FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
