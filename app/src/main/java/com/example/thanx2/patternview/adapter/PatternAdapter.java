@@ -17,7 +17,6 @@ import com.example.thanx2.patternview.database.DatabaseAdapter;
 import com.example.thanx2.patternview.helper.ImageHelper;
 import com.example.thanx2.patternview.model.Pattern;
 
-import java.io.IOException;
 import java.util.List;
 
 public class PatternAdapter extends ArrayAdapter<Pattern> {
@@ -56,15 +55,14 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
             viewHolder.nameView.setText(  uriString.substring(uriString.lastIndexOf("%2F") + 3) );
             viewHolder.uriView.setText( item.getUri() );
             return convertView;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            // e.printStackTrace();
             DatabaseAdapter adapter = new DatabaseAdapter( parent.getContext() );
             adapter.open();
             adapter.deleteByUri(item.getUri());
             adapter.close();
         }
-
-        return null;
+        return convertView;
     }
 
     private class ViewHolder {
