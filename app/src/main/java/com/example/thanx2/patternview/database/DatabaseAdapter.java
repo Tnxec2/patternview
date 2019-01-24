@@ -121,16 +121,16 @@ public class DatabaseAdapter {
         return  database.insert(DatabaseHelper.TABLE, null, cv);
     }
 
-    public long delete(long patternId){
+    public boolean delete(long patternId){
         String whereClause = "_id = ?";
         String[] whereArgs = new String[]{String.valueOf(patternId)};
-        return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs);
+        return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs) > 0;
     }
 
-    public long deleteByUri(String uri){
+    public boolean deleteByUri(String uri){
         String whereClause = DatabaseHelper.COLUMN_URI + " = ?";
         String[] whereArgs = new String[]{uri};
-        return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs);
+        return database.delete(DatabaseHelper.TABLE, whereClause, whereArgs) > 0;
     }
 
     public long update(Pattern pattern){
