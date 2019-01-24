@@ -113,7 +113,7 @@ public class PatternView extends ImageView {
     }
 
     public void rowUp() {
-        int scrollY = getScrollY() - getLayoutParams().height;
+        int scrollY = pattern.getScrollY() - pattern.getRowHeight();
         scrollY = Math.max( 0, scrollY);
         pattern.setScrollY(scrollY);
 
@@ -121,28 +121,27 @@ public class PatternView extends ImageView {
     }
 
     public void rowDown() {
-        int scrollY = getScrollY() + getLayoutParams().height;
-        scrollY = Math.min( scrollY, (int) ( getDrawable().getIntrinsicHeight() * pattern.getScale()) );
+        int scrollY = pattern.getScrollY() + pattern.getRowHeight();
+        scrollY = Math.min( scrollY, (int) ( getDrawable().getIntrinsicHeight() * pattern.getScale() - pattern.getRowHeight()) );
         pattern.setScrollY(scrollY);
 
         scrollTo(pattern.getScrollX(), pattern.getScrollY());
     }
 
     public void patternLeft() {
-        int y = pattern.getScrollY();
-        int scrollX = getMeasuredWidth() / 2;
+        int scrollX = pattern.getScrollX() - getMeasuredWidth() / 2;
         scrollX = Math.max( 0, scrollX);
         pattern.setScrollX(scrollX);
 
-        scrollTo(pattern.getScrollX(), y);
+        scrollTo(pattern.getScrollX(), pattern.getScrollY());
     }
 
     public void patternRight() {
         int iw = getMeasuredWidth();
         float iWf = getDrawable().getIntrinsicWidth() * pattern.getScale() ;
         int iW = (int) iWf;
-        int scrollX = iw / 2;
-        scrollX = Math.min( scrollX, iW-iw );
+        int scrollX = pattern.getScrollX() + iw / 2;
+        scrollX = Math.min( scrollX, iW - iw );
         pattern.setScrollX(scrollX);
 
         scrollTo(pattern.getScrollX(), pattern.getScrollY());
