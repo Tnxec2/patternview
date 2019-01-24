@@ -17,7 +17,6 @@ import com.example.thanx2.patternview.helper.ImageHelper;
 import com.example.thanx2.patternview.helper.PatternView;
 import com.example.thanx2.patternview.model.Pattern;
 
-import java.io.IOException;
 import java.util.Date;
 
 import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
@@ -33,8 +32,6 @@ public class MainActivity extends AppCompatActivity {
     final static String IMAGE_SCROLL_X = "IMAGE_SCROLL_X";
     final static String IMAGE_SCROLL_Y = "IMAGE_SCROLL_Y";
     final static String IMAGE_SCALE = "IMAGE_SCALE";
-
-    Uri uriImage;
 
     Button btn_RowHeightShrink, btn_RowHeightGrow, btn_RowDown, btn_RowUp,
             btn_PatternLeft, btn_PatternRight, btn_ImageUp, btn_ImageDown,
@@ -134,30 +131,30 @@ public class MainActivity extends AppCompatActivity {
             restoreImage(intent.getData(), intent );
         } else if( requestCode == PICK_IMAGE_REQUEST ){
             if(resultCode == RESULT_OK && intent != null && intent.hasExtra(IMAGE_URI)){
-                restoreImage(Uri.parse(intent.getStringExtra(IMAGE_URI)), intent);
+                restoreImage( Uri.parse(intent.getStringExtra(IMAGE_URI)), intent);
             }
         }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void restoreImage(Uri uri, Intent intent) {
-        uriImage = uri;
+        iv_Pattern.setUri(uri);
 
-        loadImage(uriImage, intent);
+        loadImage(intent);
 
         adapter.open();
-        Pattern pattern = adapter.getPatternByUri(uriImage.toString());
+        Pattern pattern = adapter.getPatternByUri(iv_Pattern.getUri().toString());
         if ( pattern != null) {
             iv_Pattern.setRowHeight(pattern.getRowHeight());
-            iv_Pattern.imageScale(pattern.getImageScalle());
-            iv_Pattern.scrollTo( pattern.getImageScrollX(), pattern.getImageScrollY());
+            iv_Pattern.imageScale(pattern.getScale());
+            iv_Pattern.scrollTo( pattern.getScrollX(), pattern.getScrollY());
             pattern.setLastOpened(new Date().getTime());
             adapter.update(pattern);
         } else {
             iv_Pattern.setRowHeight(ROW_HEIGHT_DEFAULT);
             iv_Pattern.imageScale(ORIGINAL_SCALE);
             iv_Pattern.scrollTo(0, 0);
-            Pattern newPattern = new Pattern( uriImage.toString(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
+            Pattern newPattern = new Pattern( iv_Pattern.getUri().toString(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
             adapter.insert(newPattern);
         }
         adapter.close();
@@ -166,11 +163,11 @@ public class MainActivity extends AppCompatActivity {
     // сохранение состояния
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if ( uriImage != null) outState.putString(IMAGE_URI, uriImage.toString());
+        if ( iv_Pattern.getUri() != null) outState.putString(IMAGE_URI, iv_Pattern.getUri().toString());
 
-        outState.putInt(ROW_HEIGHT, iv_Pattern.getMeasuredHeight());
-        outState.putInt(IMAGE_SCROLL_X, iv_Pattern.getScrollX());
-        outState.putInt(IMAGE_SCROLL_Y, iv_Pattern.getScrollY());
+        outState.putInt(ROW_HEIGHT, iv_Pattern.getPattern().getRowHeight());
+        outState.putInt(IMAGE_SCROLL_X, iv_Pattern.getPattern().getScrollX());
+        outState.putInt(IMAGE_SCROLL_Y, iv_Pattern.getPattern().getScrollY());
         outState.putFloat(IMAGE_SCALE, iv_Pattern.getScale());
 
         super.onSaveInstanceState(outState);
@@ -183,12 +180,12 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         if ( savedInstanceState.containsKey(IMAGE_URI)) {
-            uriImage = Uri.parse( savedInstanceState.getString(IMAGE_URI) );
-            loadImage(uriImage, getIntent());
+            iv_Pattern.setUri( Uri.parse( savedInstanceState.getString(IMAGE_URI) ) );
+            loadImage(getIntent());
         }
 
         if ( savedInstanceState.containsKey(ROW_HEIGHT)) {
-            iv_Pattern.getLayoutParams().height = savedInstanceState.getInt(ROW_HEIGHT);
+            iv_Pattern.setRowHeight(savedInstanceState.getInt(ROW_HEIGHT));
         }
 
         if ( savedInstanceState.containsKey(IMAGE_SCALE)) {
@@ -197,22 +194,22 @@ public class MainActivity extends AppCompatActivity {
 
         if ( savedInstanceState.containsKey(IMAGE_SCROLL_Y)
                 && savedInstanceState.containsKey(IMAGE_SCROLL_Y)) {
-            int x = savedInstanceState.getInt(IMAGE_SCROLL_X);
-            int y = savedInstanceState.getInt(IMAGE_SCROLL_Y);
+            iv_Pattern.getPattern().setScrollX( savedInstanceState.getInt(IMAGE_SCROLL_X) );
+            iv_Pattern.getPattern().setScrollY( savedInstanceState.getInt(IMAGE_SCROLL_Y) );
 
-            iv_Pattern.scrollTo(x, y);
+            iv_Pattern.scrollTo(iv_Pattern.getPattern().getScrollX(), iv_Pattern.getPattern().getScrollY());
         }
     }
 
     private void saveToDb() {
-        if ( uriImage != null ) {
+        if ( iv_Pattern.getUri() != null ) {
             adapter.open();
 
-            Pattern dbPattern = adapter.getPatternByUri(uriImage.toString());
+            Pattern dbPattern = adapter.getPatternByUri(iv_Pattern.getUri().toString());
 
             if ( dbPattern == null ) {
                 Pattern pattern = new Pattern(
-                        uriImage.toString(),
+                        iv_Pattern.getUri().toString(),
                         iv_Pattern.getMeasuredHeight(),
                         iv_Pattern.getScrollX(),
                         iv_Pattern.getScrollY(),
@@ -220,9 +217,9 @@ public class MainActivity extends AppCompatActivity {
                 );
                  adapter.insert(pattern);
             } else {
-                dbPattern.setImageScalle(iv_Pattern.getScale());
-                dbPattern.setImageScrollX(iv_Pattern.getScrollX());
-                dbPattern.setImageScrollY(iv_Pattern.getScrollY());
+                dbPattern.setScale(iv_Pattern.getScale());
+                dbPattern.setScrollX(iv_Pattern.getScrollX());
+                dbPattern.setScrollY(iv_Pattern.getScrollY());
                 dbPattern.setRowHeight(iv_Pattern.getMeasuredHeight());
                 dbPattern.setLastOpened(new Date().getTime());
                 adapter.update(dbPattern);
@@ -232,20 +229,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void loadImage(Uri uri, Intent intent) {
-        if ( uri != null) {
+    private void loadImage( Intent intent) {
+        if ( iv_Pattern.getUri() != null) {
             try {
                 final int takeFlags = intent.getFlags()
                         & Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                getContentResolver().takePersistableUriPermission(uri, takeFlags);
-                Bitmap bitmap = ImageHelper.getBitmapFromUri(uri, getApplicationContext());
+                getContentResolver().takePersistableUriPermission(iv_Pattern.getUri(), takeFlags);
+                Bitmap bitmap = ImageHelper.getBitmapFromUri(iv_Pattern.getUri(), getApplicationContext());
                 iv_Pattern.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (Exception e) {
+                // e.printStackTrace();
+                iv_Pattern.setImageBitmap(null);
+                iv_Pattern.initial();
             }
         }
     }
-
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     public void openImage() {
@@ -256,7 +254,5 @@ public class MainActivity extends AppCompatActivity {
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_GALERY_REQUEST);
     }
-
-
 
 }
