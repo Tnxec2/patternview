@@ -31,7 +31,7 @@ iW=imageView.getDrawable().getIntrinsicWidth();//original width of underlying im
 public class PatternView extends ImageView {
 
     private Pattern pattern;
-;
+
     private Matrix matrix = new Matrix();
 
     public PatternView(Context context) {
