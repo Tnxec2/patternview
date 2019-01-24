@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.example.thanx2.patternview.adapter.PatternAdapter;
 import com.example.thanx2.patternview.database.DatabaseAdapter;
