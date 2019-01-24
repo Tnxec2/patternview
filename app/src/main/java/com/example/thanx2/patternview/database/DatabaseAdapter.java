@@ -66,7 +66,7 @@ public class DatabaseAdapter {
         return  patterns;
     }
 
-    public long getCount(){
+    private long getCount(){
         return DatabaseUtils.queryNumEntries(database, DatabaseHelper.TABLE);
     }
 
