@@ -22,6 +22,7 @@ public class PatternListActivity extends AppCompatActivity {
     List<Pattern> patterns;
 
     ListView patternListView;
+    PatternAdapter patternAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +40,7 @@ public class PatternListActivity extends AppCompatActivity {
 
         patternListView = findViewById(R.id.lv_patternList);
 
-        PatternAdapter patternAdapter = new PatternAdapter(this, R.layout.patternlist_item, patterns);
+        patternAdapter = new PatternAdapter(this, R.layout.patternlist_item, patterns);
 
         patternListView.setAdapter(patternAdapter);
 
@@ -72,12 +73,7 @@ public class PatternListActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.action_open){
             giveBackPattern(info.position);
         } else if(item.getItemId()==R.id.action_delete){
-            Toast.makeText(getApplicationContext(),"delete" + patterns.get( info.position ),Toast.LENGTH_LONG).show();
-            DatabaseAdapter adapter = new DatabaseAdapter(this);
-            adapter.open();
-            adapter.deleteByUri( patterns.get(info.position).getUri());
-            patterns.remove(info.position);
-            adapter.close();
+            deletePattern(info.position);
         }else{
             return false;
         }
@@ -92,5 +88,15 @@ public class PatternListActivity extends AppCompatActivity {
         data.putExtra(MainActivity.IMAGE_URI, selectedPattern.getUri());
         setResult(RESULT_OK, data);
         finish();
+    }
+
+    private void deletePattern(int position) {
+        DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
+        dbAdapter.open();
+        if ( dbAdapter.deleteByUri( patterns.get(position).getUri()) ) {
+            patterns.remove(position);
+            patternAdapter.notifyDataSetChanged();
+        }
+        dbAdapter.close();
     }
 }
