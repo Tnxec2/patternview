@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.TextView;
 import com.example.thanx2.patternview.R;
 import com.example.thanx2.patternview.database.DatabaseAdapter;
 import com.example.thanx2.patternview.helper.ImageHelper;
+import com.example.thanx2.patternview.helper.UriHelper;
 import com.example.thanx2.patternview.model.Pattern;
 
 import java.util.List;
@@ -51,8 +53,8 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
             Uri uri = Uri.parse(item.getUri());
             bitmap = ImageHelper.getBitmapFromUri(uri, getContext());
             viewHolder.imageView.setImageBitmap( bitmap );
-            String uriString = item.getUri();
-            viewHolder.nameView.setText(  uriString.substring(uriString.lastIndexOf("%2F") + 3) );
+            String fileName = UriHelper.getFileName( getContext().getContentResolver(), uri);
+            viewHolder.nameView.setText( fileName );
             viewHolder.uriView.setText( item.getUri() );
             return convertView;
         } catch (Exception e) {
