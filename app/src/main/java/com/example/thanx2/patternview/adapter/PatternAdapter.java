@@ -12,9 +12,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thanx2.patternview.helper.ImageHelper;
 import com.example.thanx2.patternview.R;
 import com.example.thanx2.patternview.database.DatabaseAdapter;
+import com.example.thanx2.patternview.helper.ImageHelper;
 import com.example.thanx2.patternview.model.Pattern;
 
 import java.io.IOException;
@@ -47,7 +47,7 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
         }
         Pattern item = patterns.get(position);
 
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         try {
             Uri uri = Uri.parse(item.getUri());
             bitmap = ImageHelper.getBitmapFromUri(uri, getContext());
@@ -72,9 +72,9 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
         final TextView nameView;
         final TextView uriView;
         ViewHolder(View view){
-            imageView = (ImageView)view.findViewById(R.id.image);
-            nameView = (TextView) view.findViewById(R.id.name);
-            uriView = (TextView) view.findViewById(R.id.uri);
+            imageView = view.findViewById(R.id.image);
+            nameView = view.findViewById(R.id.name);
+            uriView = view.findViewById(R.id.uri);
         }
     }
 
