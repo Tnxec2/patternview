@@ -23,7 +23,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="scalingPercent" value="159" />
+                                                <entry key="scalingPercent" value="400" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -35,7 +35,7 @@
                                     <map>
                                       <entry key="backgroundAssetType" value="COLOR" />
                                       <entry key="backgroundColor" value="358da6" />
-                                      <entry key="foregroundImage" value="C:\Users\de11dv2723\AndroidStudioProjects\patternview\app\src\main\res\drawable\test.png" />
+                                      <entry key="foregroundImage" value="C:\Users\de11dv2723\AndroidStudioProjects\patternview\tmp\test.png" />
                                     </map>
                                   </option>
                                 </PersistentState>
