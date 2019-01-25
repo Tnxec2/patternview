@@ -109,6 +109,25 @@ public class DatabaseAdapter {
         return  pattern;
     }
 
+    public Pattern getLastOpened(){
+        Pattern pattern = null;
+        String query = String.format("SELECT * FROM %s ORDER BY %s DESC LIMIT ?", DatabaseHelper.TABLE, DatabaseHelper.COLUMN_LASTOPENED);
+        Cursor cursor = database.rawQuery(query, new String[]{ String.valueOf(1) });
+        if(cursor.moveToFirst()){
+            pattern = new Pattern(
+                    cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
+                    Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI))),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ROWHEIGHT)),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLX)),
+                    cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLY)),
+                    cursor.getFloat(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCALE))
+            );
+            pattern.setLastOpened(cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_LASTOPENED)));
+        }
+        cursor.close();
+        return  pattern;
+    }
+
 
     public long insert(Pattern pattern){
         ContentValues cv = new ContentValues();
