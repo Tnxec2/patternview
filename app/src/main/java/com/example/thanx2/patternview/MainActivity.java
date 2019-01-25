@@ -62,7 +62,7 @@ public class MainActivity extends AppCompatActivity {
         btn_ImageFit = findViewById(R.id.btn_ImageFit);
 
         iv_Pattern = findViewById(R.id.iv_Pattern);
-        iv_Pattern.setRowHeight(ROW_HEIGHT_DEFAULT);
+        iv_Pattern.setPatternRowHeight(ROW_HEIGHT_DEFAULT);
 
         btn_RowUp.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { iv_Pattern.rowUp(); }});
@@ -145,16 +145,16 @@ public class MainActivity extends AppCompatActivity {
         adapter.open();
         Pattern pattern = adapter.getPatternByUri(iv_Pattern.getUri().toString());
         if ( pattern != null) {
-            iv_Pattern.setRowHeight(pattern.getRowHeight());
-            iv_Pattern.imageScale(pattern.getScale());
-            iv_Pattern.scrollTo( pattern.getScrollX(), pattern.getScrollY());
-            pattern.setLastOpened(new Date().getTime());
+            iv_Pattern.setPatternRowHeight( pattern.getRowHeight() );
+            iv_Pattern.imageScale( pattern.getScale() );
+            iv_Pattern.scrollTo( pattern.getPatternX(), pattern.getPatternY() );
+            pattern.setLastOpened( new Date().getTime() );
             adapter.update(pattern);
         } else {
-            iv_Pattern.setRowHeight(ROW_HEIGHT_DEFAULT);
-            iv_Pattern.imageScale(ORIGINAL_SCALE);
+            iv_Pattern.setPatternRowHeight( ROW_HEIGHT_DEFAULT );
+            iv_Pattern.imageScale( ORIGINAL_SCALE );
             iv_Pattern.scrollTo(0, 0);
-            Pattern newPattern = new Pattern( iv_Pattern.getUri().toString(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
+            Pattern newPattern = new Pattern( iv_Pattern.getUri(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
             adapter.insert(newPattern);
         }
         adapter.close();
@@ -163,11 +163,12 @@ public class MainActivity extends AppCompatActivity {
     // сохранение состояния
     @Override
     protected void onSaveInstanceState(Bundle outState) {
+
         if ( iv_Pattern.getUri() != null) outState.putString(IMAGE_URI, iv_Pattern.getUri().toString());
 
-        outState.putInt(ROW_HEIGHT, iv_Pattern.getPattern().getRowHeight());
-        outState.putInt(IMAGE_SCROLL_X, iv_Pattern.getPattern().getScrollX());
-        outState.putInt(IMAGE_SCROLL_Y, iv_Pattern.getPattern().getScrollY());
+        outState.putInt(ROW_HEIGHT, iv_Pattern.getPatternRowHeight());
+        outState.putInt(IMAGE_SCROLL_X, iv_Pattern.getPatternX());
+        outState.putInt(IMAGE_SCROLL_Y, iv_Pattern.getPatternY());
         outState.putFloat(IMAGE_SCALE, iv_Pattern.getScale());
 
         super.onSaveInstanceState(outState);
@@ -181,11 +182,11 @@ public class MainActivity extends AppCompatActivity {
 
         if ( savedInstanceState.containsKey(IMAGE_URI)) {
             iv_Pattern.setUri( Uri.parse( savedInstanceState.getString(IMAGE_URI) ) );
-            loadImage(getIntent());
+            loadImage( getIntent() );
         }
 
         if ( savedInstanceState.containsKey(ROW_HEIGHT)) {
-            iv_Pattern.setRowHeight(savedInstanceState.getInt(ROW_HEIGHT));
+            iv_Pattern.setPatternRowHeight( savedInstanceState.getInt(ROW_HEIGHT) );
         }
 
         if ( savedInstanceState.containsKey(IMAGE_SCALE)) {
@@ -194,10 +195,10 @@ public class MainActivity extends AppCompatActivity {
 
         if ( savedInstanceState.containsKey(IMAGE_SCROLL_X)
                 && savedInstanceState.containsKey(IMAGE_SCROLL_Y)) {
-            iv_Pattern.getPattern().setScrollX( savedInstanceState.getInt(IMAGE_SCROLL_X) );
-            iv_Pattern.getPattern().setScrollY( savedInstanceState.getInt(IMAGE_SCROLL_Y) );
+            iv_Pattern.setPatternX( savedInstanceState.getInt(IMAGE_SCROLL_X) );
+            iv_Pattern.setPatternY( savedInstanceState.getInt(IMAGE_SCROLL_Y) );
 
-            iv_Pattern.scrollTo(iv_Pattern.getPattern().getScrollX(), iv_Pattern.getPattern().getScrollY());
+            iv_Pattern.scrollTo(iv_Pattern.getPatternX(), iv_Pattern.getPatternY());
         }
     }
 
@@ -209,18 +210,18 @@ public class MainActivity extends AppCompatActivity {
 
             if ( dbPattern == null ) {
                 Pattern pattern = new Pattern(
-                        iv_Pattern.getUri().toString(),
-                        iv_Pattern.getMeasuredHeight(),
-                        iv_Pattern.getScrollX(),
-                        iv_Pattern.getScrollY(),
+                        iv_Pattern.getUri(),
+                        iv_Pattern.getPatternRowHeight(),
+                        iv_Pattern.getPatternX(),
+                        iv_Pattern.getPatternY(),
                         iv_Pattern.getScale()
                 );
                  adapter.insert(pattern);
             } else {
                 dbPattern.setScale(iv_Pattern.getScale());
-                dbPattern.setScrollX(iv_Pattern.getScrollX());
-                dbPattern.setScrollY(iv_Pattern.getScrollY());
-                dbPattern.setRowHeight(iv_Pattern.getMeasuredHeight());
+                dbPattern.setPatternX(iv_Pattern.getScrollX());
+                dbPattern.setPatternY(iv_Pattern.getScrollY());
+                dbPattern.setRowHeight(iv_Pattern.getPatternRowHeight());
                 dbPattern.setLastOpened(new Date().getTime());
                 adapter.update(dbPattern);
             }

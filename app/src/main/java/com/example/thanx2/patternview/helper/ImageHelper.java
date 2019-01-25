@@ -7,7 +7,6 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 
 import java.io.FileDescriptor;
-import java.io.IOException;
 
 public class ImageHelper {
 

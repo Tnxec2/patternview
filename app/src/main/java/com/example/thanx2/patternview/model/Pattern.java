@@ -1,5 +1,7 @@
 package com.example.thanx2.patternview.model;
 
+import android.net.Uri;
+
 import java.util.Date;
 
 import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
@@ -8,10 +10,10 @@ import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAUL
 public class Pattern {
 
     private Long id;
-    private String uri;
+    private Uri uri;
     private Integer rowHeight;
-    private Integer scrollX;
-    private Integer scrollY;
+    private Integer patternX;
+    private Integer patternY;
     private Float scale;
     private Long lastOpened;
 
@@ -19,27 +21,27 @@ public class Pattern {
         id = null;
         uri = null;
         rowHeight = ROW_HEIGHT_DEFAULT;
-        scrollX = 0;
-        scrollY = 0;
+        patternX = 0;
+        patternY = 0;
         scale = ORIGINAL_SCALE;
         lastOpened = null;
     }
 
-    public Pattern(Long id, String uri, Integer rowHeight, Integer scrollX, Integer scrollY, Float scale) {
+    public Pattern(Long id, Uri uri, Integer rowHeight, Integer patternX, Integer patternY, Float scale) {
         this.id = id;
         this.uri = uri;
         this.rowHeight = rowHeight;
-        this.scrollX = scrollX;
-        this.scrollY = scrollY;
+        this.patternX = patternX;
+        this.patternY = patternY;
         this.scale = scale;
         this.lastOpened = new Date().getTime();
     }
 
-    public Pattern(String uri, Integer rowHeight, Integer scrollX, Integer scrollY, Float scale) {
+    public Pattern(Uri uri, Integer rowHeight, Integer patternX, Integer patternY, Float scale) {
         this.uri = uri;
         this.rowHeight = rowHeight;
-        this.scrollX = scrollX;
-        this.scrollY = scrollY;
+        this.patternX = patternX;
+        this.patternY = patternY;
         this.scale = scale;
         this.lastOpened = new Date().getTime();
     }
@@ -52,12 +54,24 @@ public class Pattern {
         this.id = id;
     }
 
-    public String getUri() {
-        return uri;
+    public Uri getUri() {
+            return uri;
+    }
+
+    public String getUriString() {
+        if ( uri != null) {
+            return uri.toString();
+        } else {
+            return null;
+        }
+    }
+
+    public void setUri(Uri uri) {
+        this.uri = uri;
     }
 
     public void setUri(String uri) {
-        this.uri = uri;
+        this.uri = Uri.parse(uri);
     }
 
     public Integer getRowHeight() {
@@ -68,20 +82,20 @@ public class Pattern {
         this.rowHeight = rowHeight;
     }
 
-    public Integer getScrollX() {
-        return scrollX;
+    public Integer getPatternX() {
+        return patternX;
     }
 
-    public void setScrollX(Integer scrollX) {
-        this.scrollX = scrollX;
+    public void setPatternX(Integer patternX) {
+        this.patternX = patternX;
     }
 
-    public Integer getScrollY() {
-        return scrollY;
+    public Integer getPatternY() {
+        return patternY;
     }
 
-    public void setScrollY(Integer scrollY) {
-        this.scrollY = scrollY;
+    public void setPatternY(Integer patternY) {
+        this.patternY = patternY;
     }
 
     public Float getScale() {

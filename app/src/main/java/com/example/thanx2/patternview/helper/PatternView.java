@@ -66,7 +66,7 @@ public class PatternView extends ImageView {
         float iW = getDrawable().getIntrinsicWidth();
 
         imageScale(iw / iW);
-        scrollTo(0, pattern.getScrollY());
+        scrollTo(0, pattern.getPatternY());
     }
 
     public void imageScale(Float scale) {
@@ -76,12 +76,6 @@ public class PatternView extends ImageView {
             matrix.setScale(scale, scale);
             setImageMatrix(matrix);
         }
-    }
-
-    public void setRowHeight(int height) {
-        pattern.setRowHeight(height);
-        requestLayout();
-        getLayoutParams().height = pattern.getRowHeight();
     }
 
     public void rowShrink() {
@@ -97,54 +91,54 @@ public class PatternView extends ImageView {
     }
 
     public void imageUp() {
-        int scrollY = pattern.getScrollY() + ROW_HEIGHT_STEP;
+        int scrollY = pattern.getPatternY() + ROW_HEIGHT_STEP;
         scrollY = Math.min(scrollY, (int) (getDrawable().getIntrinsicHeight() * pattern.getScale()) );
-        pattern.setScrollY(scrollY);
+        pattern.setPatternY(scrollY);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     public void imageDown() {
-        int scrollY = pattern.getScrollY() - ROW_HEIGHT_STEP;
+        int scrollY = pattern.getPatternY() - ROW_HEIGHT_STEP;
         scrollY = Math.max(0, scrollY);
-        pattern.setScrollY(scrollY);
+        pattern.setPatternY(scrollY);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     public void rowUp() {
-        int scrollY = pattern.getScrollY() - pattern.getRowHeight();
+        int scrollY = pattern.getPatternY() - pattern.getRowHeight();
         scrollY = Math.max( 0, scrollY);
-        pattern.setScrollY(scrollY);
+        pattern.setPatternY(scrollY);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     public void rowDown() {
-        int scrollY = pattern.getScrollY() + pattern.getRowHeight();
+        int scrollY = pattern.getPatternY() + pattern.getRowHeight();
         scrollY = Math.min( scrollY, (int) ( getDrawable().getIntrinsicHeight() * pattern.getScale() - pattern.getRowHeight()) );
-        pattern.setScrollY(scrollY);
+        pattern.setPatternY(scrollY);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     public void patternLeft() {
-        int scrollX = pattern.getScrollX() - getMeasuredWidth() / 2;
+        int scrollX = pattern.getPatternX() - getMeasuredWidth() / 2;
         scrollX = Math.max( 0, scrollX);
-        pattern.setScrollX(scrollX);
+        pattern.setPatternX(scrollX);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     public void patternRight() {
         int iw = getMeasuredWidth();
         float iWf = getDrawable().getIntrinsicWidth() * pattern.getScale() ;
         int iW = (int) iWf;
-        int scrollX = pattern.getScrollX() + iw / 2;
+        int scrollX = pattern.getPatternX() + iw / 2;
         scrollX = Math.min( scrollX, iW - iw );
-        pattern.setScrollX(scrollX);
+        pattern.setPatternX(scrollX);
 
-        scrollTo(pattern.getScrollX(), pattern.getScrollY());
+        scrollTo(pattern.getPatternX(), pattern.getPatternY());
     }
 
     private float checkScale(float scale) {
@@ -157,21 +151,18 @@ public class PatternView extends ImageView {
 
     public void initial() {
         pattern = new Pattern();
-        setRowHeight(ROW_HEIGHT_DEFAULT);
+        setPatternRowHeight(ROW_HEIGHT_DEFAULT);
         imageOriginalZoom();
         scrollTo(0, 0);
         setImageURI(null);
     }
 
     public Uri getUri() {
-        if ( pattern.getUri() != null)
-            return Uri.parse( pattern.getUri() );
-        else
-            return null;
+        return pattern.getUri();
     }
 
     public void setUri(Uri uri) {
-        pattern.setUri(uri.toString());
+        pattern.setUri(uri);
         setImageURI(uri);
     }
 
@@ -181,5 +172,31 @@ public class PatternView extends ImageView {
 
     public void setPattern(Pattern pattern) {
         this.pattern = pattern;
+    }
+
+    public Integer getPatternX() {
+        return pattern.getPatternX();
+    }
+
+    public void setPatternX(Integer patternX) {
+        pattern.setPatternX(patternX);
+    }
+
+    public Integer getPatternY() {
+        return pattern.getPatternY();
+    }
+
+    public void setPatternY(Integer patternY) {
+        pattern.setPatternY(patternY);
+    }
+
+    public Integer getPatternRowHeight() {
+        return pattern.getRowHeight();
+    }
+
+    public void setPatternRowHeight(int height) {
+        pattern.setRowHeight(height);
+        requestLayout();
+        getLayoutParams().height = pattern.getRowHeight();
     }
 }

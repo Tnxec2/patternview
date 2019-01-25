@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.example.thanx2.patternview.model.Pattern;
 
@@ -51,7 +52,7 @@ public class DatabaseAdapter {
             do{
                 Pattern pattern = new Pattern(
                         cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
-                        cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI)),
+                        Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI))),
                         cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ROWHEIGHT)),
                         cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLX)),
                         cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLY)),
@@ -77,7 +78,7 @@ public class DatabaseAdapter {
         if(cursor.moveToFirst()){
             pattern = new Pattern(
                     cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI)),
+                    Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI))),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ROWHEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLX)),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLY)),
@@ -96,7 +97,7 @@ public class DatabaseAdapter {
         if(cursor.moveToFirst()){
             pattern = new Pattern(
                     cursor.getLong(cursor.getColumnIndex(DatabaseHelper.COLUMN_ID)),
-                    cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI)),
+                    Uri.parse(cursor.getString(cursor.getColumnIndex(DatabaseHelper.COLUMN_URI))),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_ROWHEIGHT)),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLX)),
                     cursor.getInt(cursor.getColumnIndex(DatabaseHelper.COLUMN_SCROLLY)),
@@ -111,10 +112,10 @@ public class DatabaseAdapter {
 
     public long insert(Pattern pattern){
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_URI, pattern.getUri());
+        cv.put(DatabaseHelper.COLUMN_URI, pattern.getUriString());
         cv.put(DatabaseHelper.COLUMN_ROWHEIGHT, pattern.getRowHeight());
-        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getScrollX());
-        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getScrollY());
+        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getPatternX());
+        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getPatternY());
         cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getScale());
         cv.put(DatabaseHelper.COLUMN_LASTOPENED, pattern.getLastOpened());
 
@@ -137,10 +138,10 @@ public class DatabaseAdapter {
 
         String whereClause = DatabaseHelper.COLUMN_ID + "=" + String.valueOf(pattern.getId());
         ContentValues cv = new ContentValues();
-        cv.put(DatabaseHelper.COLUMN_URI, pattern.getUri());
+        cv.put(DatabaseHelper.COLUMN_URI, pattern.getUriString());
         cv.put(DatabaseHelper.COLUMN_ROWHEIGHT, pattern.getRowHeight());
-        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getScrollX());
-        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getScrollY());
+        cv.put(DatabaseHelper.COLUMN_SCROLLX, pattern.getPatternX());
+        cv.put(DatabaseHelper.COLUMN_SCROLLY, pattern.getPatternY());
         cv.put(DatabaseHelper.COLUMN_SCALE, pattern.getScale());
         cv.put(DatabaseHelper.COLUMN_LASTOPENED, pattern.getLastOpened());
 

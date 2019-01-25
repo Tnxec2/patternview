@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,18 +49,18 @@ public class PatternAdapter extends ArrayAdapter<Pattern> {
 
         Bitmap bitmap;
         try {
-            Uri uri = Uri.parse(item.getUri());
+            Uri uri = Uri.parse(item.getUriString());
             bitmap = ImageHelper.getBitmapFromUri(uri, getContext());
             viewHolder.imageView.setImageBitmap( bitmap );
             String fileName = UriHelper.getFileName( getContext().getContentResolver(), uri);
             viewHolder.nameView.setText( fileName );
-            viewHolder.uriView.setText( item.getUri() );
+            viewHolder.uriView.setText( item.getUriString() );
             return convertView;
         } catch (Exception e) {
             // e.printStackTrace();
             DatabaseAdapter adapter = new DatabaseAdapter( parent.getContext() );
             adapter.open();
-            adapter.deleteByUri(item.getUri());
+            adapter.deleteByUri(item.getUriString());
             adapter.close();
         }
         return convertView;
