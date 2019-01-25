@@ -10,7 +10,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import com.example.thanx2.patternview.database.DatabaseAdapter;
 import com.example.thanx2.patternview.helper.ImageHelper;
@@ -33,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     final static String IMAGE_SCROLL_Y = "IMAGE_SCROLL_Y";
     final static String IMAGE_SCALE = "IMAGE_SCALE";
 
-    Button btn_RowHeightShrink, btn_RowHeightGrow, btn_RowDown, btn_RowUp,
+    ImageButton btn_RowHeightShrink, btn_RowHeightGrow, btn_RowDown, btn_RowUp,
             btn_PatternLeft, btn_PatternRight, btn_ImageUp, btn_ImageDown,
-            btn_ZoomIn, btn_OriginalZoom, btn_ImageFit, btn_ZoomOut;
+            btn_ZoomIn, btn_OriginalZoom, btn_ImageFit, btn_ZoomOut, btn_ImageFull;
 
     PatternView iv_Pattern;
 
@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
         btn_ZoomOut = findViewById(R.id.btn_ZoomOut);
         btn_OriginalZoom = findViewById(R.id.btn_OriginalZoom);
         btn_ImageFit = findViewById(R.id.btn_ImageFit);
+        btn_ImageFull = findViewById(R.id.btn_Full);
 
         iv_Pattern = findViewById(R.id.iv_Pattern);
         iv_Pattern.setPatternRowHeight(ROW_HEIGHT_DEFAULT);
@@ -88,8 +89,11 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) { iv_Pattern.imageOriginalZoom(); }});
         btn_ImageFit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { iv_Pattern.imageFit(); }});
+        btn_ImageFull.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) { openFullImage(view); }});
 
         adapter = new DatabaseAdapter(this);
+
     }
 
     @Override
@@ -110,8 +114,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_RecentPatternList :
                 saveToDb();
                 Intent intent = new Intent(getApplicationContext(), PatternListActivity.class);
-                intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
-                intent.addCategory(Intent.CATEGORY_OPENABLE);
                 startActivityForResult(intent, PICK_IMAGE_REQUEST);
                 return true;
         }
@@ -256,4 +258,9 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_GALERY_REQUEST);
     }
 
+    public void openFullImage(View view) {
+        Intent intent = new Intent(getApplicationContext(), FullpatternActivity.class);
+        intent.putExtra(IMAGE_URI, iv_Pattern.getUri());
+        startActivity(intent);
+    }
 }

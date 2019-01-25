@@ -27,39 +27,34 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_RowHeightShrink"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/row_height_shrink" />
+                    android:src="@drawable/ic_shrink"  />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_RowHeightGrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/row_height_grow" />
-            </LinearLayout>
+                    android:src="@drawable/ic_grow" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
-
-                <Button
+                <ImageButton
                     android:id="@+id/btn_ImageUp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_up" />
+                    android:src="@drawable/ic_upward" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_ImageDown"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_down" />
+                    android:src="@drawable/ic_downward" />
+
             </LinearLayout>
 
             <LinearLayout
@@ -68,33 +63,45 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_ZoomIn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_zoom_in" />
+                    android:src="@drawable/ic_zoomin" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_OriginalZoom"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_crop" />
+                    android:src="@drawable/ic_croporiginal" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_ImageFit"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_fit" />
+                    android:src="@drawable/ic_scale" />
 
-                <Button
+                <ImageButton
                     android:id="@+id/btn_ZoomOut"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:text="@string/image_zoom_out" />
+                    android:src="@drawable/ic_zoomout" />
+
+                <Space
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:id="@+id/btn_Full"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_fullscreen" />
             </LinearLayout>
 
         </LinearLayout>
@@ -122,33 +129,33 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_PatternLeft"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/left" />
+            android:src="@drawable/ic_left" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_RowUp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/row_up" />
+            android:src="@drawable/ic_down" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_RowDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/row_down" />
+            android:src="@drawable/ic_up" />
 
-        <Button
+        <ImageButton
             android:id="@+id/btn_PatternRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/right" />
+            android:src="@drawable/ic_right" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
