@@ -32,13 +32,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_shrink"  />
+                    android:contentDescription="@string/row_height_shrink"
+                    android:src="@drawable/ic_shrink" />
 
                 <ImageButton
                     android:id="@+id/btn_RowHeightGrow"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/row_height_grow"
                     android:src="@drawable/ic_grow" />
 
                 <ImageButton
@@ -46,6 +48,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_up"
                     android:src="@drawable/ic_upward" />
 
                 <ImageButton
@@ -53,6 +56,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_down"
                     android:src="@drawable/ic_downward" />
 
             </LinearLayout>
@@ -68,6 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_zoom_in"
                     android:src="@drawable/ic_zoomin" />
 
                 <ImageButton
@@ -75,6 +80,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_crop"
                     android:src="@drawable/ic_croporiginal" />
 
                 <ImageButton
@@ -82,6 +88,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_fit"
                     android:src="@drawable/ic_scale" />
 
                 <ImageButton
@@ -89,6 +96,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/image_zoom_out"
                     android:src="@drawable/ic_zoomout" />
 
                 <Space
@@ -101,6 +109,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:contentDescription="@string/full_image"
                     android:src="@drawable/ic_fullscreen" />
             </LinearLayout>
 
@@ -134,6 +143,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:contentDescription="@string/left"
             android:src="@drawable/ic_left" />
 
         <ImageButton
@@ -141,20 +151,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_down" />
+            android:contentDescription="@string/row_up"
+            android:src="@drawable/ic_up" />
 
         <ImageButton
             android:id="@+id/btn_RowDown"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/ic_up" />
+            android:contentDescription="@string/row_down"
+            android:src="@drawable/ic_down" />
 
         <ImageButton
             android:id="@+id/btn_PatternRight"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:contentDescription="@string/right"
             android:src="@drawable/ic_right" />
     </LinearLayout>
 
