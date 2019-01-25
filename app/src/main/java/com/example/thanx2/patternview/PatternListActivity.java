@@ -84,7 +84,7 @@ public class PatternListActivity extends AppCompatActivity {
 
         // und zurück an MainActivity übergeben
         Intent data = new Intent();
-        data.putExtra(MainActivity.IMAGE_URI, selectedPattern.getUri());
+        data.putExtra( MainActivity.IMAGE_URI, selectedPattern.getUriString() );
         setResult(RESULT_OK, data);
         finish();
     }
