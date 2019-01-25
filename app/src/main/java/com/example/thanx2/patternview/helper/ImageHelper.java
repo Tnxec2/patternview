@@ -13,9 +13,13 @@ public class ImageHelper {
     public static Bitmap getBitmapFromUri(Uri uri, Context context) throws Exception {
         ParcelFileDescriptor parcelFileDescriptor =
                 context.getContentResolver().openFileDescriptor(uri, "r");
-        FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
-        Bitmap image = BitmapFactory.decodeFileDescriptor(fileDescriptor);
-        parcelFileDescriptor.close();
-        return image;
+        FileDescriptor fileDescriptor;
+        Bitmap bitmap = null;
+        if (parcelFileDescriptor != null) {
+            fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+        }
+        return bitmap;
     }
 }
