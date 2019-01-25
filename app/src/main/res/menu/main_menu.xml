@@ -6,6 +6,9 @@
         android:id="@+id/action_OpenImage"
         android:title="@string/open_image" />
     <item
+        android:id="@+id/action_FullImage"
+        android:title="@string/full_image" />
+    <item
         android:id="@+id/action_RecentPatternList"
         android:title="@string/recent_pattern_list" />
 </menu>
