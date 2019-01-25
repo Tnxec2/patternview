@@ -22,4 +22,5 @@
     <string name="delete">Eintrag löschen</string>
     <string name="open">Öffnen</string>
     <string name="select_action">Wählen Sie Aktion</string>
+    <string name="full_image">ganzes Bild</string>
 </resources>
