@@ -22,6 +22,7 @@ import java.util.Date;
 import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
 import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class MainActivity extends AppCompatActivity {
 
     private int PICK_GALLERY_REQUEST = 1;
@@ -95,6 +96,17 @@ public class MainActivity extends AppCompatActivity {
         adapter = new DatabaseAdapter(this);
 
         disableButtons();
+
+        adapter.open();
+        Pattern lastOpenedPattern = adapter.getLastOpened();
+        if ( lastOpenedPattern != null ) {
+            iv_Pattern.setUri(lastOpenedPattern.getUri());
+            iv_Pattern.setPatternRowHeight(lastOpenedPattern.getRowHeight());
+            iv_Pattern.imageScale(lastOpenedPattern.getScale());
+            iv_Pattern.scroll(lastOpenedPattern.getPatternX(), lastOpenedPattern.getPatternY());
+            loadImage(getIntent());
+        }
+        adapter.close();
     }
 
     @Override
