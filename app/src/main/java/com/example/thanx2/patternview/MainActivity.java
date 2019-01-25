@@ -24,7 +24,7 @@ import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAUL
 
 public class MainActivity extends AppCompatActivity {
 
-    private int PICK_GALERY_REQUEST = 1;
+    private int PICK_GALLERY_REQUEST = 1;
     private int PICK_IMAGE_REQUEST = 2;
 
     final static String IMAGE_URI = "IMAGE_URI";
@@ -90,10 +90,11 @@ public class MainActivity extends AppCompatActivity {
         btn_ImageFit.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) { iv_Pattern.imageFit(); }});
         btn_ImageFull.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) { openFullImage(view); }});
+            public void onClick(View view) { openFullImage(); }});
 
         adapter = new DatabaseAdapter(this);
 
+        disableButtons();
     }
 
     @Override
@@ -111,6 +112,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.action_OpenImage :
                 openImage();
                 return true;
+            case R.id.action_FullImage :
+                openFullImage();
+                return true;
             case R.id.action_RecentPatternList :
                 saveToDb();
                 Intent intent = new Intent(getApplicationContext(), PatternListActivity.class);
@@ -126,14 +130,19 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, intent);
 
         // Image geöffnet
-        if (requestCode == PICK_GALERY_REQUEST && resultCode == RESULT_OK && intent != null && intent.getData() != null) {
-
-            // aktuelles Bild speichern
-            saveToDb();
-            restoreImage(intent.getData(), intent );
+        if (requestCode == PICK_GALLERY_REQUEST) {
+            if ( resultCode == RESULT_OK ) {
+                if ( intent != null && intent.getData() != null ) {
+                    // aktuelles Bild speichern
+                    saveToDb();
+                    restoreImage(intent.getData(), intent);
+                }
+            }
         } else if( requestCode == PICK_IMAGE_REQUEST ){
-            if(resultCode == RESULT_OK && intent != null && intent.hasExtra(IMAGE_URI)){
-                restoreImage( Uri.parse(intent.getStringExtra(IMAGE_URI)), intent);
+            if(resultCode == RESULT_OK) {
+                if ( intent != null && intent.hasExtra(IMAGE_URI) ) {
+                    restoreImage(Uri.parse(intent.getStringExtra(IMAGE_URI)), intent);
+                }
             }
         }
     }
@@ -149,13 +158,13 @@ public class MainActivity extends AppCompatActivity {
         if ( pattern != null) {
             iv_Pattern.setPatternRowHeight( pattern.getRowHeight() );
             iv_Pattern.imageScale( pattern.getScale() );
-            iv_Pattern.scrollTo( pattern.getPatternX(), pattern.getPatternY() );
+            iv_Pattern.scroll( pattern.getPatternX(), pattern.getPatternY() );
             pattern.setLastOpened( new Date().getTime() );
             adapter.update(pattern);
         } else {
             iv_Pattern.setPatternRowHeight( ROW_HEIGHT_DEFAULT );
             iv_Pattern.imageScale( ORIGINAL_SCALE );
-            iv_Pattern.scrollTo(0, 0);
+            iv_Pattern.scroll(0, 0);
             Pattern newPattern = new Pattern( iv_Pattern.getUri(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
             adapter.insert(newPattern);
         }
@@ -197,10 +206,10 @@ public class MainActivity extends AppCompatActivity {
 
         if ( savedInstanceState.containsKey(IMAGE_SCROLL_X)
                 && savedInstanceState.containsKey(IMAGE_SCROLL_Y)) {
-            iv_Pattern.setPatternX( savedInstanceState.getInt(IMAGE_SCROLL_X) );
-            iv_Pattern.setPatternY( savedInstanceState.getInt(IMAGE_SCROLL_Y) );
+            int x =  savedInstanceState.getInt(IMAGE_SCROLL_X);
+            int y = savedInstanceState.getInt(IMAGE_SCROLL_Y);
 
-            iv_Pattern.scrollTo(iv_Pattern.getPatternX(), iv_Pattern.getPatternY());
+            iv_Pattern.scroll(x, y);
         }
     }
 
@@ -240,6 +249,7 @@ public class MainActivity extends AppCompatActivity {
                 getContentResolver().takePersistableUriPermission(iv_Pattern.getUri(), takeFlags);
                 Bitmap bitmap = ImageHelper.getBitmapFromUri(iv_Pattern.getUri(), getApplicationContext());
                 iv_Pattern.setImageBitmap(bitmap);
+                enableButtons();
             } catch (Exception e) {
                 // e.printStackTrace();
                 iv_Pattern.setImageBitmap(null);
@@ -255,12 +265,42 @@ public class MainActivity extends AppCompatActivity {
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         // Always show the chooser (if there are multiple options available)
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_GALERY_REQUEST);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_GALLERY_REQUEST);
     }
 
-    public void openFullImage(View view) {
-        Intent intent = new Intent(getApplicationContext(), FullpatternActivity.class);
-        intent.putExtra(IMAGE_URI, iv_Pattern.getUri());
-        startActivity(intent);
+    public void openFullImage() {
+        if ( iv_Pattern.getUri() != null ) {
+            Intent intent = new Intent(getApplicationContext(), FullpatternActivity.class);
+            intent.putExtra(IMAGE_URI, iv_Pattern.getUri());
+            startActivity(intent);
+        }
+    }
+
+    public void enableButtons() {
+        btn_ImageDown.setEnabled(true);
+        btn_ImageUp.setEnabled(true);
+        btn_ZoomIn.setEnabled(true);
+        btn_ZoomOut.setEnabled(true);
+        btn_OriginalZoom.setEnabled(true);
+        btn_ImageFit.setEnabled(true);
+        btn_ImageFull.setEnabled(true);
+        btn_PatternRight.setEnabled(true);
+        btn_PatternLeft.setEnabled(true);
+        btn_RowDown.setEnabled(true);
+        btn_RowUp.setEnabled(true);
+    }
+
+    public void disableButtons() {
+        btn_ImageDown.setEnabled(false);
+        btn_ImageUp.setEnabled(false);
+        btn_ZoomIn.setEnabled(false);
+        btn_ZoomOut.setEnabled(false);
+        btn_OriginalZoom.setEnabled(false);
+        btn_ImageFit.setEnabled(false);
+        btn_ImageFull.setEnabled(false);
+        btn_PatternRight.setEnabled(false);
+        btn_PatternLeft.setEnabled(false);
+        btn_RowDown.setEnabled(false);
+        btn_RowUp.setEnabled(false);
     }
 }
