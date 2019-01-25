@@ -92,7 +92,7 @@ public class PatternListActivity extends AppCompatActivity {
     private void deletePattern(int position) {
         DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
         dbAdapter.open();
-        if ( dbAdapter.deleteByUri( patterns.get(position).getUri()) ) {
+        if ( dbAdapter.deleteByUri( patterns.get(position).getUriString()) ) {
             patterns.remove(position);
             patternAdapter.notifyDataSetChanged();
         }
