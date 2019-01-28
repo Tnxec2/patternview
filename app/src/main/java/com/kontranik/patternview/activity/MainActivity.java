@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview;
+package com.kontranik.patternview.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -12,15 +12,16 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 
-import com.example.thanx2.patternview.database.DatabaseAdapter;
-import com.example.thanx2.patternview.helper.ImageHelper;
-import com.example.thanx2.patternview.helper.PatternView;
-import com.example.thanx2.patternview.model.Pattern;
+import com.kontranik.patternview.R;
+import com.kontranik.patternview.database.DatabaseAdapter;
+import com.kontranik.patternview.helper.ImageHelper;
+import com.kontranik.patternview.helper.PatternView;
+import com.kontranik.patternview.model.Pattern;
 
 import java.util.Date;
 
-import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
-import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
+import static com.kontranik.patternview.constant.Constant.ORIGINAL_SCALE;
+import static com.kontranik.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class MainActivity extends AppCompatActivity {
@@ -99,14 +100,8 @@ public class MainActivity extends AppCompatActivity {
 
         adapter.open();
         Pattern lastOpenedPattern = adapter.getLastOpened();
-        if ( lastOpenedPattern != null ) {
-            iv_Pattern.setUri(lastOpenedPattern.getUri());
-            iv_Pattern.setPatternRowHeight(lastOpenedPattern.getRowHeight());
-            iv_Pattern.imageScale(lastOpenedPattern.getScale());
-            iv_Pattern.scroll(lastOpenedPattern.getPatternX(), lastOpenedPattern.getPatternY());
-            loadImage(getIntent());
-        }
         adapter.close();
+        if ( lastOpenedPattern != null) restoreImage( lastOpenedPattern.getUri(), getIntent() );
     }
 
     @Override
@@ -161,13 +156,15 @@ public class MainActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     private void restoreImage(Uri uri, Intent intent) {
-        iv_Pattern.setUri(uri);
 
-        loadImage(intent);
+        if ( loadImage(uri, intent) ) {
+            iv_Pattern.setUri(uri);
+        }
 
         adapter.open();
-        Pattern pattern = adapter.getPatternByUri(iv_Pattern.getUri().toString());
+        Pattern pattern = adapter.getPatternByUri( uri.toString() );
         if ( pattern != null) {
+            iv_Pattern.setPatternId(pattern.getId());
             iv_Pattern.setPatternRowHeight( pattern.getRowHeight() );
             iv_Pattern.imageScale( pattern.getScale() );
             iv_Pattern.scroll( pattern.getPatternX(), pattern.getPatternY() );
@@ -177,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
             iv_Pattern.setPatternRowHeight( ROW_HEIGHT_DEFAULT );
             iv_Pattern.imageScale( ORIGINAL_SCALE );
             iv_Pattern.scroll(0, 0);
-            Pattern newPattern = new Pattern( iv_Pattern.getUri(), ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
+            Pattern newPattern = new Pattern( uri, ROW_HEIGHT_DEFAULT, 0, 0, ORIGINAL_SCALE);
             adapter.insert(newPattern);
         }
         adapter.close();
@@ -194,6 +191,8 @@ public class MainActivity extends AppCompatActivity {
         outState.putInt(IMAGE_SCROLL_Y, iv_Pattern.getPatternY());
         outState.putFloat(IMAGE_SCALE, iv_Pattern.getScale());
 
+        saveToDb();
+
         super.onSaveInstanceState(outState);
     }
 
@@ -204,8 +203,9 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
 
         if ( savedInstanceState.containsKey(IMAGE_URI)) {
-            iv_Pattern.setUri( Uri.parse( savedInstanceState.getString(IMAGE_URI) ) );
-            loadImage( getIntent() );
+            Uri uri = Uri.parse( savedInstanceState.getString(IMAGE_URI) ) ;
+            iv_Pattern.setUri( uri );
+            loadImage( uri, getIntent() );
         }
 
         if ( savedInstanceState.containsKey(ROW_HEIGHT)) {
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity {
         if ( iv_Pattern.getUri() != null ) {
             adapter.open();
 
-            Pattern dbPattern = adapter.getPatternByUri(iv_Pattern.getUri().toString());
+            Pattern dbPattern = adapter.getPatternByUri( iv_Pattern.getUri().toString() );
 
             if ( dbPattern == null ) {
                 Pattern pattern = new Pattern(
@@ -253,20 +253,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    private void loadImage( Intent intent) {
-        if ( iv_Pattern.getUri() != null) {
+    private boolean loadImage( Uri uri, Intent intent) {
+        if ( uri != null) {
             try {
                 final int takeFlags = intent.getFlags()
                         & Intent.FLAG_GRANT_READ_URI_PERMISSION;
-                getContentResolver().takePersistableUriPermission(iv_Pattern.getUri(), takeFlags);
-                Bitmap bitmap = ImageHelper.getBitmapFromUri(iv_Pattern.getUri(), getApplicationContext());
+                getContentResolver().takePersistableUriPermission(uri, takeFlags);
+                Bitmap bitmap = ImageHelper.getBitmapFromUri(uri, getApplicationContext());
                 iv_Pattern.setImageBitmap(bitmap);
                 enableButtons();
+                return true;
             } catch (Exception e) {
                 // e.printStackTrace();
                 iv_Pattern.setImageBitmap(null);
                 iv_Pattern.initial();
+                return false;
             }
+        } else {
+            return false;
         }
     }
 
@@ -282,7 +286,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void openFullImage() {
         if ( iv_Pattern.getUri() != null ) {
-            Intent intent = new Intent(getApplicationContext(), FullpatternActivity.class);
+            Intent intent = new Intent(getApplicationContext(), FullPatternActivity.class);
             intent.putExtra(IMAGE_URI, iv_Pattern.getUri());
             startActivity(intent);
         }

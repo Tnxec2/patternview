@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.constant;
+package com.kontranik.patternview.constant;
 
 public class Constant {
     public final static int    ROW_HEIGHT_DEFAULT = 100;

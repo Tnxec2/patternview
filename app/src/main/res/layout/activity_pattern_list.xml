@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".PatternListActivity">
+    tools:context=".activity.PatternListActivity">
 
     <ListView
         android:id="@+id/lv_patternList"

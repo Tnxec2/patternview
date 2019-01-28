@@ -1,6 +1,8 @@
-package com.example.thanx2.patternview;
+package com.kontranik.patternview.activity;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.ContextMenu;
@@ -10,12 +12,14 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.example.thanx2.patternview.adapter.PatternAdapter;
-import com.example.thanx2.patternview.database.DatabaseAdapter;
-import com.example.thanx2.patternview.model.Pattern;
+import com.kontranik.patternview.R;
+import com.kontranik.patternview.adapter.PatternAdapter;
+import com.kontranik.patternview.database.DatabaseAdapter;
+import com.kontranik.patternview.model.Pattern;
 
 import java.util.List;
 
+@RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class PatternListActivity extends AppCompatActivity {
 
     List<Pattern> patterns;
@@ -78,6 +82,7 @@ public class PatternListActivity extends AppCompatActivity {
         }
         return true;
     }
+
 
     private void giveBackPattern(int position) {
         Pattern selectedPattern = patterns.get(position);

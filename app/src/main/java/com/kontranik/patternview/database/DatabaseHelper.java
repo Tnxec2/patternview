@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.database;
+package com.kontranik.patternview.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

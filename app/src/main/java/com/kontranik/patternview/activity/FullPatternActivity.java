@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview;
+package com.kontranik.patternview.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -9,9 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
-import com.example.thanx2.patternview.helper.ImageHelper;
+import com.kontranik.patternview.R;
+import com.kontranik.patternview.helper.ImageHelper;
 
-public class FullpatternActivity extends AppCompatActivity {
+public class FullPatternActivity extends AppCompatActivity {
 
     final static String IMAGE_URI = "IMAGE_URI";
 

@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.adapter;
+package com.kontranik.patternview.adapter;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -12,11 +12,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.thanx2.patternview.R;
-import com.example.thanx2.patternview.database.DatabaseAdapter;
-import com.example.thanx2.patternview.helper.ImageHelper;
-import com.example.thanx2.patternview.helper.UriHelper;
-import com.example.thanx2.patternview.model.Pattern;
+import com.kontranik.patternview.R;
+import com.kontranik.patternview.database.DatabaseAdapter;
+import com.kontranik.patternview.helper.ImageHelper;
+import com.kontranik.patternview.helper.UriHelper;
+import com.kontranik.patternview.model.Pattern;
 
 import java.util.List;
 

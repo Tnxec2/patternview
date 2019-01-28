@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".activity.MainActivity">
 
     <LinearLayout
         android:id="@+id/linearLayoutRow"
@@ -117,7 +117,7 @@
 
     </LinearLayout>
 
-    <com.example.thanx2.patternview.helper.PatternView
+    <com.kontranik.patternview.helper.PatternView
         android:id="@+id/iv_Pattern"
         android:layout_width="match_parent"
         android:layout_height="100dp"

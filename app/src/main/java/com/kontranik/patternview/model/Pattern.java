@@ -1,11 +1,10 @@
-package com.example.thanx2.patternview.model;
+package com.kontranik.patternview.model;
 
 import android.net.Uri;
 
-import java.util.Date;
+import com.kontranik.patternview.constant.Constant;
 
-import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
-import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
+import java.util.Date;
 
 public class Pattern {
 
@@ -20,10 +19,10 @@ public class Pattern {
     public Pattern() {
         id = null;
         uri = null;
-        rowHeight = ROW_HEIGHT_DEFAULT;
+        rowHeight = Constant.ROW_HEIGHT_DEFAULT;
         patternX = 0;
         patternY = 0;
-        scale = ORIGINAL_SCALE;
+        scale = Constant.ORIGINAL_SCALE;
         lastOpened = null;
     }
 

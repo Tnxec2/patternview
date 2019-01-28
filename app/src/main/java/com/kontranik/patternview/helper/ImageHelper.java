@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.helper;
+package com.kontranik.patternview.helper;
 
 import android.content.Context;
 import android.graphics.Bitmap;

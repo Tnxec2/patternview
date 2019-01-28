@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.database;
+package com.kontranik.patternview.database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 
-import com.example.thanx2.patternview.model.Pattern;
+import com.kontranik.patternview.model.Pattern;
 
 import java.util.ArrayList;
 import java.util.List;

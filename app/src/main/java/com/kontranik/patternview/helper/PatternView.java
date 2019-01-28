@@ -1,4 +1,4 @@
-package com.example.thanx2.patternview.helper;
+package com.kontranik.patternview.helper;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -9,14 +9,8 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 
 
-import com.example.thanx2.patternview.model.Pattern;
-
-import static com.example.thanx2.patternview.constant.Constant.MAX_SCALE;
-import static com.example.thanx2.patternview.constant.Constant.MIN_SCALE;
-import static com.example.thanx2.patternview.constant.Constant.ORIGINAL_SCALE;
-import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_DEFAULT;
-import static com.example.thanx2.patternview.constant.Constant.ROW_HEIGHT_STEP;
-import static com.example.thanx2.patternview.constant.Constant.SCALE_STEP;
+import com.kontranik.patternview.model.Pattern;
+import com.kontranik.patternview.constant.Constant;
 
 /*
 
@@ -50,15 +44,15 @@ public class PatternView extends ImageView {
     }
 
     public void imageZoomIn() {
-        imageScale( pattern.getScale() * ( 1 + SCALE_STEP ) );
+        imageScale( pattern.getScale() * ( 1 + Constant.SCALE_STEP ) );
     }
 
     public void imageZoomOut() {
-        imageScale( pattern.getScale() * ( 1 - SCALE_STEP ) );
+        imageScale( pattern.getScale() * ( 1 - Constant.SCALE_STEP ) );
     }
 
     public void imageOriginalZoom() {
-        imageScale(ORIGINAL_SCALE);
+        imageScale(Constant.ORIGINAL_SCALE);
     }
 
     public void imageFit() {
@@ -79,25 +73,25 @@ public class PatternView extends ImageView {
     }
 
     public void rowShrink() {
-        pattern.setRowHeight(pattern.getRowHeight() - ROW_HEIGHT_STEP);
+        pattern.setRowHeight(pattern.getRowHeight() - Constant.ROW_HEIGHT_STEP);
         requestLayout();
         getLayoutParams().height = pattern.getRowHeight();
     }
 
     public void rowGrow( ) {
         requestLayout();
-        pattern.setRowHeight(pattern.getRowHeight() + ROW_HEIGHT_STEP);
+        pattern.setRowHeight(pattern.getRowHeight() + Constant.ROW_HEIGHT_STEP);
         getLayoutParams().height = pattern.getRowHeight();
     }
 
     public void imageUp() {
-        int scrollY = pattern.getPatternY() + ROW_HEIGHT_STEP;
+        int scrollY = pattern.getPatternY() + Constant.ROW_HEIGHT_STEP;
         scrollY = Math.min(scrollY, (int) (getDrawable().getIntrinsicHeight() * pattern.getScale()) );
         scroll( pattern.getPatternX(), scrollY );
     }
 
     public void imageDown() {
-        int scrollY = pattern.getPatternY() - ROW_HEIGHT_STEP;
+        int scrollY = pattern.getPatternY() - Constant.ROW_HEIGHT_STEP;
         scrollY = Math.max(0, scrollY);
 
         scroll( pattern.getPatternX(), scrollY);
@@ -135,7 +129,7 @@ public class PatternView extends ImageView {
     }
 
     private float checkScale(float scale) {
-        return Math.max(MIN_SCALE, Math.min(scale, MAX_SCALE));
+        return Math.max(Constant.MIN_SCALE, Math.min(scale, Constant.MAX_SCALE));
     }
 
     public Float getScale() {
@@ -144,7 +138,7 @@ public class PatternView extends ImageView {
 
     public void initial() {
         pattern = new Pattern();
-        setPatternRowHeight(ROW_HEIGHT_DEFAULT);
+        setPatternRowHeight(Constant.ROW_HEIGHT_DEFAULT);
         imageOriginalZoom();
         scroll(0, 0);
         setImageURI(null);
@@ -175,6 +169,10 @@ public class PatternView extends ImageView {
         pattern.setRowHeight(height);
         requestLayout();
         getLayoutParams().height = pattern.getRowHeight();
+    }
+
+    public void setPatternId(long id) {
+        pattern.setId(id);
     }
 
     public void scroll(int x, int y) {
