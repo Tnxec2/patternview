@@ -18,6 +18,7 @@ import com.kontranik.patternview.helper.ImageHelper;
 import com.kontranik.patternview.helper.PatternView;
 import com.kontranik.patternview.model.Pattern;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import static com.kontranik.patternview.constant.Constant.ORIGINAL_SCALE;
@@ -96,12 +97,25 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new DatabaseAdapter(this);
 
+
         disableButtons();
 
-        adapter.open();
-        Pattern lastOpenedPattern = adapter.getLastOpened();
-        adapter.close();
-        if ( lastOpenedPattern != null) restoreImage( lastOpenedPattern.getUri(), getIntent() );
+        // geteilte über Teilen-Funktion Bilder abfangen
+        // Get intent, action and MIME type
+        Intent intent = getIntent();
+        String action = intent.getAction();
+        String type = intent.getType();
+
+        if (Intent.ACTION_SEND.equals(action) && type != null) {
+            if (type.startsWith("image/")) {
+                handleSendImage(intent); // Handle single image being sent
+            }
+        } else {
+            adapter.open();
+            Pattern lastOpenedPattern = adapter.getLastOpened();
+            adapter.close();
+            if (lastOpenedPattern != null) restoreImage(lastOpenedPattern.getUri(), getIntent());
+        }
     }
 
     @Override
@@ -196,6 +210,14 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
     }
 
+    @Override
+    protected void onStop() {
+
+        saveToDb();
+
+        super.onStop();
+    }
+
     // получение ранее сохраненного состояния
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
@@ -282,6 +304,13 @@ public class MainActivity extends AppCompatActivity {
         intent.setAction(Intent.ACTION_OPEN_DOCUMENT);
         // Always show the chooser (if there are multiple options available)
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)), PICK_GALLERY_REQUEST);
+    }
+
+    void handleSendImage(Intent intent) {
+        Uri imageUri = (Uri) intent.getParcelableExtra(Intent.EXTRA_STREAM);
+        if (imageUri != null) {
+            restoreImage( imageUri, intent );
+        }
     }
 
     public void openFullImage() {
